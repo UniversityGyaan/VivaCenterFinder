@@ -226,16 +226,16 @@ RESULT
 
 #result{
 
-margin-top:28px;
+margin-top:22px;
 
 scroll-margin-top:20px;
 }
 
 .result-main{
 
-padding:22px;
+padding:18px;
 
-border-radius:24px;
+border-radius:22px;
 
 background:rgba(255,255,255,0.08);
 
@@ -245,11 +245,11 @@ border:1px solid rgba(255,255,255,0.12);
 .result-box,
 .pending-box{
 
-margin-top:16px;
+margin-top:14px;
 
-padding:18px;
+padding:16px;
 
-border-radius:20px;
+border-radius:18px;
 
 background:rgba(255,255,255,0.06);
 
@@ -267,7 +267,7 @@ font-weight:700;
 
 color:#ffffff;
 
-margin-bottom:10px;
+margin-bottom:8px;
 }
 
 /* RESULT TEXT */
@@ -277,7 +277,7 @@ margin-bottom:10px;
 
 font-size:15px;
 
-line-height:1.8;
+line-height:1.6;
 
 color:#d1d5db;
 }
@@ -288,11 +288,11 @@ SUPPORT BOX
 
 .support-box{
 
-margin-top:30px;
+margin-top:24px;
 
-padding:24px;
+padding:22px;
 
-border-radius:24px;
+border-radius:22px;
 
 background:linear-gradient(
 135deg,
@@ -332,11 +332,13 @@ box-shadow:0 0 12px rgba(255,152,0,0.15);
 
 .support-box h3{
 
-font-size:22px;
+font-size:24px;
 
 font-weight:700;
 
 color:#ffffff;
+
+line-height:1.4;
 
 margin-bottom:12px;
 }
@@ -347,7 +349,7 @@ margin-bottom:12px;
 
 font-size:15px;
 
-line-height:1.8;
+line-height:1.7;
 
 color:#f3f4f6;
 }
@@ -392,7 +394,7 @@ CHANNEL BUTTONS
 
 .channel-buttons{
 
-margin-top:22px;
+margin-top:18px;
 
 display:flex;
 
@@ -441,17 +443,17 @@ COUNTER BOX
 
 .counter-box{
 
-margin-top:25px;
+margin-top:22px;
 
-padding:20px;
+padding:18px;
 
-border-radius:22px;
+border-radius:20px;
 
 background:rgba(255,255,255,0.08);
 
 border:1px solid rgba(255,255,255,0.12);
 
-line-height:2;
+line-height:1.9;
 
 font-size:15px;
 
@@ -464,11 +466,11 @@ FOOTER
 
 .footer{
 
-margin-top:30px;
+margin-top:26px;
 
 font-size:14px;
 
-line-height:1.9;
+line-height:1.8;
 
 text-align:center;
 
@@ -476,88 +478,163 @@ color:#d1d5db;
 }
 
 /* =========================
-MOBILE
+MOBILE OPTIMIZATION
 ========================= */
 
 @media(max-width:600px){
 
 body{
-
-padding:10px;
+padding:8px;
 }
 
 .card{
-
-padding:18px;
+padding:16px;
+border-radius:22px;
 }
+
+/* LOGO */
 
 .logo{
-
-width:75px;
+width:72px;
+margin-bottom:10px;
 }
 
-h1{
+/* HEADINGS */
 
-font-size:26px;
+h1{
+font-size:24px;
 }
 
 .subtitle{
-
-font-size:14px;
+font-size:13px;
+margin-top:5px;
 }
+
+/* TOP TAG */
 
 .top-tag{
-
-font-size:14px;
-
-padding:11px;
+font-size:13px;
+padding:10px;
+margin-top:16px;
+margin-bottom:16px;
 }
+
+/* INPUTS */
 
 select,
 button{
+padding:13px;
+font-size:14px;
+margin-top:12px;
+}
+
+/* RESULT SECTION */
+
+.result-main{
+padding:14px;
+border-radius:18px;
+}
+
+.result-box,
+.pending-box{
 
 padding:14px;
 
-font-size:14px;
+margin-top:12px;
+
+border-radius:16px;
 }
+
+/* RESULT HEADING */
 
 .result-box h3,
 .pending-box h3{
 
-font-size:17px;
+font-size:15px;
+
+margin-bottom:6px;
 }
+
+/* RESULT TEXT */
 
 .result-box p,
 .pending-box p{
 
-font-size:14px;
+font-size:13px;
+
+line-height:1.5;
+}
+
+/* SUPPORT BOX */
+
+.support-box{
+
+margin-top:18px;
+
+padding:18px;
+
+border-radius:18px;
 }
 
 .support-box h3{
 
-font-size:20px;
+font-size:18px;
+
+line-height:1.4;
 }
 
 .support-box p{
 
+font-size:13px;
+
+line-height:1.6;
+
+margin-top:8px;
+}
+
+/* COFFEE BUTTON */
+
+.coffee-btn{
+
+padding:11px 18px;
+
 font-size:14px;
+}
+
+/* CHANNEL BUTTONS */
+
+.channel-buttons{
+margin-top:16px;
+gap:8px;
 }
 
 .small-btn{
 
-font-size:13px;
+font-size:12px;
 
-padding:10px 15px;
+padding:9px 14px;
 }
+
+/* COUNTER */
 
 .counter-box{
 
-font-size:14px;
+padding:14px;
+
+font-size:13px;
+
+line-height:1.7;
 }
+
+/* FOOTER */
 
 .footer{
 
-font-size:13px;
+margin-top:20px;
+
+font-size:12px;
+
+line-height:1.7;
 }
 
-}
+  }
