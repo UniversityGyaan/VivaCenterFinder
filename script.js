@@ -175,7 +175,23 @@ subjectCodeSelect.innerHTML =
 </option>
 `;
 
+/* RESET COLLEGE */
+
 collegeChoices.clearChoices();
+
+collegeChoices.setChoices(
+[
+{
+value:'',
+label:'अपना कॉलेज चुनें (Select College)',
+selected:true,
+disabled:true
+}
+],
+'value',
+'label',
+true
+);
 
 /* SUBJECT FILTER */
 
@@ -231,7 +247,23 @@ subjectCodeSelect.innerHTML =
 </option>
 `;
 
+/* RESET COLLEGE */
+
 collegeChoices.clearChoices();
+
+collegeChoices.setChoices(
+[
+{
+value:'',
+label:'अपना कॉलेज चुनें (Select College)',
+selected:true,
+disabled:true
+}
+],
+'value',
+'label',
+true
+);
 
 /* SUBJECT CODE FILTER */
 
@@ -305,16 +337,26 @@ item.SubjectCode === selectedCode
 
 collegeChoices.clearChoices();
 
-/* LOAD COLLEGES */
+/* LOAD COLLEGES WITH PLACEHOLDER */
 
 collegeChoices.setChoices(
 
-colleges.map(college => ({
+[
+{
+value:'',
+label:'अपना कॉलेज चुनें (Select College)',
+selected:true,
+disabled:true
+},
+
+...colleges.map(college => ({
 
 value:college,
 label:college
 
-})),
+}))
+
+],
 
 'value',
 'label',
@@ -440,8 +482,8 @@ dateHTML =
 </h3>
 
 <p>
-Viva date अभी  announce नहीं हुई है.
-Daily check चेक करते रहें.
+Viva date अभी announce नहीं हुई है.
+Daily check करते रहें.
 </p>
 
 </div>
