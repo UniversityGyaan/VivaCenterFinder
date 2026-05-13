@@ -2,6 +2,7 @@ const SHEET_URL =
 "https://opensheet.elk.sh/1aSUuu6gcnZNdYwli17DhEdjfIO_y0lag0KhhuTHo3Bg/Sheet1";
 
 let allData = [];
+let collegeSearch;
 
 /* =========================
 ELEMENTS
@@ -46,8 +47,6 @@ await fetch(SHEET_URL);
 
 const data =
 await response.json();
-
-console.log(data);
 
 allData = data.map(item => ({
 
@@ -176,6 +175,10 @@ collegeSelect.innerHTML =
 </option>
 `;
 
+if(collegeSearch){
+collegeSearch.destroy();
+}
+
 const subjects =
 [
 ...new Set(
@@ -231,6 +234,10 @@ collegeSelect.innerHTML =
 </option>
 `;
 
+if(collegeSearch){
+collegeSearch.destroy();
+}
+
 const subjectCodes =
 [
 ...new Set(
@@ -280,6 +287,10 @@ collegeSelect.innerHTML =
 </option>
 `;
 
+if(collegeSearch){
+collegeSearch.destroy();
+}
+
 const colleges =
 [
 ...new Set(
@@ -309,6 +320,22 @@ ${college}
 `;
 
 });
+
+/* SEARCHABLE DROPDOWN */
+
+collegeSearch =
+new TomSelect(
+"#collegeSelect",
+{
+create:false,
+sortField:{
+field:"text",
+direction:"asc"
+},
+placeholder:
+"College Search करें"
+}
+);
 
 checkFormComplete();
 
@@ -407,20 +434,6 @@ dateHTML =
 ${found.VivaDate}
 </p>
 
-</div>
-
-<div class="result-box">
-
-<h3>
-⏰ Reporting Time
-</h3>
-
-<p>
-${found.ReportingTime}
-</p>
-
-</div>
-
 ${
 found.NoticeLink
 
@@ -441,6 +454,20 @@ class="notice-btn">
 ''
 
 }
+
+</div>
+
+<div class="result-box">
+
+<h3>
+⏰ Reporting Time
+</h3>
+
+<p>
+${found.ReportingTime}
+</p>
+
+</div>
 `;
 
 }
@@ -544,7 +571,7 @@ parseInt(parts[0])
 }
 
 /* =========================
-UPCOMING ALERTS
+UPCOMING ALERT SLIDER
 ========================= */
 
 function loadUpcomingAlerts(){
@@ -566,34 +593,52 @@ next5Days.setDate(
 today.getDate()+5
 );
 
-const upcomingData =
-allData.filter(item => {
+/* UNIQUE DATA */
+
+const uniqueMap =
+new Map();
+
+allData.forEach(item => {
 
 if(
-
 !item.Status ||
 item.Status.toLowerCase() !==
 'declared'
-
 ){
-return false;
+return;
 }
 
 const vivaDate =
 parseCustomDate(item.VivaDate);
 
 if(!vivaDate){
-return false;
+return;
 }
 
-return (
-vivaDate >= today &&
-vivaDate <= next5Days
-);
+if(
+vivaDate < today ||
+vivaDate > next5Days
+){
+return;
+}
+
+const key =
+`${item.VivaCenter}-${item.Subject}-${item.VivaDate}`;
+
+if(!uniqueMap.has(key)){
+
+uniqueMap.set(key,item);
+
+}
 
 });
 
-if(upcomingData.length === 0){
+const updates =
+[...uniqueMap.values()];
+
+/* NO DATA */
+
+if(updates.length === 0){
 
 alertContainer.innerHTML =
 `
@@ -610,51 +655,115 @@ return;
 
 }
 
-alertContainer.innerHTML = "";
+/* CREATE SLIDER */
 
-upcomingData.forEach(item => {
-
-alertContainer.innerHTML +=
+alertContainer.innerHTML =
 `
-<div class="alert-card">
+<div class="updates-slider">
 
-<h3>
+<div class="update-track"
+id="updateTrack">
+
+${updates.map(item => `
+
+<div class="update-card">
+
+<div class="update-content full-width">
+
+<div class="update-title">
 🏫 ${item.VivaCenter}
-</h3>
+</div>
 
-<p>
+<div class="update-sub">
 
+${item.Class}
 ${item.Subject}
-का Viva
-दिनांक
-${item.VivaDate}
-को होगा।
+• ${item.VivaDate}
 
-</p>
+</div>
 
-${
-item.NoticeLink
+</div>
 
-?
+</div>
 
-`
-<a href="${item.NoticeLink}"
-target="_blank"
-class="notice-btn">
+`).join('')}
 
-📄 Notice Download
+</div>
 
-</a>
-`
+<div class="slider-dots">
 
-:
+${updates.map((_,index)=>`
 
-''
+<div class="slider-dot
+${index===0?'active':''}"
+data-index="${index}">
 
-}
+</div>
+
+`).join('')}
+
+</div>
 
 </div>
 `;
+
+const track =
+document.getElementById(
+'updateTrack'
+);
+
+const dots =
+document.querySelectorAll(
+'.slider-dot'
+);
+
+let current = 0;
+
+function showSlide(index){
+
+track.style.transform =
+`translateX(-${index*100}%)`;
+
+dots.forEach(dot =>
+dot.classList.remove('active')
+);
+
+dots[index].classList.add(
+'active'
+);
+
+current = index;
+
+}
+
+/* AUTO SLIDE */
+
+setInterval(()=>{
+
+current++;
+
+if(current >= updates.length){
+current = 0;
+}
+
+showSlide(current);
+
+},7000);
+
+/* MANUAL */
+
+dots.forEach(dot => {
+
+dot.addEventListener(
+'click',
+()=>{
+
+showSlide(
+parseInt(dot.dataset.index)
+);
+
+}
+);
 
 });
 
