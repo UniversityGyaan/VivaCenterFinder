@@ -37,9 +37,18 @@ collegeChoices = new Choices(
 '#collegeSelect',
 {
 searchEnabled:true,
+
 itemSelectText:'',
+
 shouldSort:false,
-searchPlaceholderValue:'Search College'
+
+placeholder:true,
+
+placeholderValue:
+'अपना कॉलेज चुनें (Select College)',
+
+searchPlaceholderValue:
+'College Search करें'
 }
 );
 
