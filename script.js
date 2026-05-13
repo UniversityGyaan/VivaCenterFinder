@@ -321,8 +321,6 @@ ${college}
 
 });
 
-/* SEARCHABLE DROPDOWN */
-
 collegeSearch =
 new TomSelect(
 "#collegeSelect",
@@ -571,7 +569,7 @@ parseInt(parts[0])
 }
 
 /* =========================
-UPCOMING ALERT SLIDER
+UPCOMING VIVA ALERT
 ========================= */
 
 function loadUpcomingAlerts(){
@@ -623,7 +621,7 @@ return;
 }
 
 const key =
-`${item.VivaCenter}-${item.Subject}-${item.VivaDate}`;
+`${item.VivaCenter}`;
 
 if(!uniqueMap.has(key)){
 
@@ -659,22 +657,26 @@ return;
 
 alertContainer.innerHTML =
 `
-<div class="updates-slider">
+<div class="alert-heading">
 
-<div class="update-track"
-id="updateTrack">
+🔥 Upcoming Viva Alert
+
+</div>
+
+<div class="single-slider">
+
+<div class="single-track"
+id="singleTrack">
 
 ${updates.map(item => `
 
-<div class="update-card">
+<div class="single-card">
 
-<div class="update-content full-width">
-
-<div class="update-title">
+<div class="single-title">
 🏫 ${item.VivaCenter}
 </div>
 
-<div class="update-sub">
+<div class="single-sub">
 
 ${item.Class}
 ${item.Subject}
@@ -684,9 +686,9 @@ ${item.Subject}
 
 </div>
 
-</div>
-
 `).join('')}
+
+</div>
 
 </div>
 
@@ -703,13 +705,11 @@ data-index="${index}">
 `).join('')}
 
 </div>
-
-</div>
 `;
 
 const track =
 document.getElementById(
-'updateTrack'
+'singleTrack'
 );
 
 const dots =
@@ -748,7 +748,7 @@ current = 0;
 
 showSlide(current);
 
-},7000);
+},5000);
 
 /* MANUAL */
 
