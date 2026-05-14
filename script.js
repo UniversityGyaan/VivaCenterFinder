@@ -4,6 +4,10 @@ const SHEET_URL =
 let allData = [];
 let collegeSearch;
 
+/* =========================
+ELEMENTS
+========================= */
+
 const classSelect =
 document.getElementById("classSelect");
 
@@ -26,7 +30,7 @@ const searchBtn =
 document.getElementById("searchBtn");
 
 /* =========================
-INITIAL
+INITIAL STATE
 ========================= */
 
 subjectSelect.style.display = "none";
@@ -97,9 +101,16 @@ console.log(error);
 
 loader.innerHTML =
 `
-<div class="pending-box">
-<h3>❌ Data Load Failed</h3>
-<p>Google Sheet connect नहीं हो पा रही।</p>
+<div class="pending-box compact-box">
+
+<h3>
+❌ Data Load Failed
+</h3>
+
+<p>
+Google Sheet connect नहीं हो पा रही।
+</p>
+
 </div>
 `;
 
@@ -116,9 +127,11 @@ function loadClasses(){
 const classes =
 [
 ...new Set(
+
 allData
 .map(item => item.Class)
 .filter(Boolean)
+
 )
 ];
 
@@ -150,7 +163,21 @@ classSelect.addEventListener(
 'change',
 function(){
 
+if(!this.value){
+
+subjectSelect.style.display = "none";
+subjectCodeSelect.style.display = "none";
+collegeSelect.style.display = "none";
+searchBtn.style.display = "none";
+
+return;
+
+}
+
+/* ENABLE SUBJECT */
+
 subjectSelect.style.display = "block";
+subjectSelect.disabled = false;
 
 subjectSelect.innerHTML =
 `
@@ -162,6 +189,20 @@ Select Subject
 subjectCodeSelect.style.display = "none";
 collegeSelect.style.display = "none";
 searchBtn.style.display = "none";
+
+subjectCodeSelect.innerHTML =
+`
+<option value="">
+Select Subject Code
+</option>
+`;
+
+collegeSelect.innerHTML =
+`
+<option value="">
+Select College
+</option>
+`;
 
 if(collegeSearch){
 collegeSearch.destroy();
@@ -204,7 +245,20 @@ subjectSelect.addEventListener(
 'change',
 function(){
 
+if(!this.value){
+
+subjectCodeSelect.style.display = "none";
+collegeSelect.style.display = "none";
+searchBtn.style.display = "none";
+
+return;
+
+}
+
+/* ENABLE SUBJECT CODE */
+
 subjectCodeSelect.style.display = "block";
+subjectCodeSelect.disabled = false;
 
 subjectCodeSelect.innerHTML =
 `
@@ -215,6 +269,13 @@ Select Subject Code
 
 collegeSelect.style.display = "none";
 searchBtn.style.display = "none";
+
+collegeSelect.innerHTML =
+`
+<option value="">
+Select College
+</option>
+`;
 
 if(collegeSearch){
 collegeSearch.destroy();
@@ -260,7 +321,19 @@ subjectCodeSelect.addEventListener(
 'change',
 function(){
 
+if(!this.value){
+
+collegeSelect.style.display = "none";
+searchBtn.style.display = "none";
+
+return;
+
+}
+
+/* ENABLE COLLEGE */
+
 collegeSelect.style.display = "block";
+collegeSelect.disabled = false;
 
 collegeSelect.innerHTML =
 `
@@ -303,18 +376,30 @@ ${college}
 
 });
 
+/* SEARCHABLE DROPDOWN */
+
 collegeSearch =
 new TomSelect(
 "#collegeSelect",
 {
 create:false,
+
 sortField:{
 field:"text",
 direction:"asc"
 },
+
 placeholder:
 "Search College",
-maxOptions:500
+
+maxOptions:500,
+
+onChange:function(){
+
+enableSearchButton();
+
+}
+
 }
 );
 
@@ -322,24 +407,44 @@ maxOptions:500
 );
 
 /* =========================
-COLLEGE CHANGE
+ENABLE BUTTON
 ========================= */
 
 collegeSelect.addEventListener(
 'change',
-function(){
+enableSearchButton
+);
+
+function enableSearchButton(){
+
+const collegeValue =
+collegeSelect.tomselect
+? collegeSelect.tomselect.getValue()
+: collegeSelect.value;
 
 if(
+
 classSelect.value &&
 subjectSelect.value &&
 subjectCodeSelect.value &&
-collegeSelect.value
+collegeValue
+
 ){
+
 searchBtn.style.display = "block";
+
+searchBtn.disabled = false;
+
+}
+else{
+
+searchBtn.style.display = "none";
+
+searchBtn.disabled = true;
+
 }
 
 }
-);
 
 /* =========================
 SEARCH
@@ -352,13 +457,18 @@ findCenter
 
 function findCenter(){
 
+const collegeValue =
+collegeSelect.tomselect
+? collegeSelect.tomselect.getValue()
+: collegeSelect.value;
+
 const found =
 allData.find(item =>
 
 item.Class === classSelect.value &&
 item.Subject === subjectSelect.value &&
 item.SubjectCode === subjectCodeSelect.value &&
-item.College === collegeSelect.value
+item.College === collegeValue
 
 );
 
@@ -366,8 +476,12 @@ if(!found){
 
 resultDiv.innerHTML =
 `
-<div class="pending-box">
-<h3>❌ Record नहीं मिला</h3>
+<div class="pending-box compact-box">
+
+<h3>
+❌ Record नहीं मिला
+</h3>
+
 </div>
 `;
 
@@ -386,9 +500,13 @@ dateHTML =
 `
 <div class="result-box compact-box">
 
-<h3>📅 Viva Date</h3>
+<h3>
+📅 Viva Date
+</h3>
 
-<p>${found.VivaDate}</p>
+<p>
+${found.VivaDate}
+</p>
 
 ${
 found.NoticeLink
@@ -415,9 +533,13 @@ class="notice-btn">
 
 <div class="result-box compact-box">
 
-<h3>⏰ Reporting Time</h3>
+<h3>
+⏰ Reporting Time
+</h3>
 
-<p>${found.ReportingTime}</p>
+<p>
+${found.ReportingTime}
+</p>
 
 </div>
 `;
@@ -429,7 +551,9 @@ dateHTML =
 `
 <div class="pending-box compact-box">
 
-<h3>📢 Viva Date Update</h3>
+<h3>
+📢 Viva Date Update
+</h3>
 
 <p>
 Viva date अभी घोषित नहीं हुई है।
@@ -442,13 +566,17 @@ Viva date अभी घोषित नहीं हुई है।
 
 resultDiv.innerHTML =
 `
-<div class="result-main fade-in small-result">
+<div class="result-main fade-in">
 
 <div class="result-box compact-box">
 
-<h3>🏫 Viva Center</h3>
+<h3>
+🏫 Viva Center
+</h3>
 
-<p>${found.VivaCenter}</p>
+<p>
+${found.VivaCenter}
+</p>
 
 </div>
 
@@ -475,7 +603,8 @@ function parseCustomDate(dateString){
 
 if(
 !dateString ||
-dateString.toLowerCase() === 'pending'
+dateString.toLowerCase() ===
+'pending'
 ){
 return null;
 }
@@ -515,7 +644,7 @@ parseInt(parts[0])
 }
 
 /* =========================
-UPCOMING ALERT SLIDER
+UPCOMING ALERTS
 ========================= */
 
 function loadUpcomingAlerts(){
@@ -582,8 +711,12 @@ if(updates.length === 0){
 
 alertContainer.innerHTML =
 `
-<div class="pending-box">
-<h3>📢 अगले 5 दिनों में कोई Viva Update नहीं है।</h3>
+<div class="pending-box compact-box">
+
+<h3>
+📢 अगले 5 दिनों में कोई Viva Update नहीं है।
+</h3>
+
 </div>
 `;
 
@@ -594,7 +727,9 @@ return;
 alertContainer.innerHTML =
 `
 <div class="alert-heading">
+
 🔥 Upcoming Viva Alert
+
 </div>
 
 <div class="single-slider">
@@ -611,9 +746,11 @@ ${updates.map(item => `
 </div>
 
 <div class="single-sub">
+
 ${item.Class}
 ${item.Subject}
 • ${item.VivaDate}
+
 </div>
 
 ${
@@ -689,7 +826,7 @@ current = index;
 
 }
 
-/* AUTO */
+/* AUTO SWIPE */
 
 setInterval(()=>{
 
@@ -758,7 +895,7 @@ showSlide(current);
 
 }
 
-/* DOT MANUAL */
+/* DOT CLICK */
 
 dots.forEach(dot => {
 
@@ -778,7 +915,7 @@ parseInt(dot.dataset.index)
 }
 
 /* =========================
-VISITOR COUNTER
+VISITOR COUNT
 ========================= */
 
 async function updateVisitorCount(){
