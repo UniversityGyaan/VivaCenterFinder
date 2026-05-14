@@ -15,6 +15,10 @@ University Gyaan Viva Center
 <link rel="stylesheet"
 href="./style.css">
 
+<link
+href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css"
+rel="stylesheet">
+
 <link rel="preconnect"
 href="https://fonts.googleapis.com">
 
@@ -48,30 +52,29 @@ MA / M.Com Viva Center Finder 2026
 🔥 CCS University Meerut
 </div>
 
-<div id="upcomingAlerts">
-</div>
+<div id="upcomingAlerts"></div>
 
 <select id="classSelect">
 <option value="">
-कोर्स चुनें (Select Course)
+Select Course
 </option>
 </select>
 
-<select id="subjectSelect">
+<select id="subjectSelect" disabled>
 <option value="">
-विषय चुनें (Select Subject)
+Select Subject
 </option>
 </select>
 
-<select id="subjectCodeSelect">
+<select id="subjectCodeSelect" disabled>
 <option value="">
-विषय कोड चुनें (Select Subject Code)
+Select Subject Code
 </option>
 </select>
 
-<select id="collegeSelect">
+<select id="collegeSelect" disabled>
 <option value="">
-अपना कॉलेज चुनें (Select College)
+Select College
 </option>
 </select>
 
@@ -153,6 +156,8 @@ Powered by University Gyaan
 </div>
 
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script>
 
 <script src="./script.js"></script>
 
