@@ -30,6 +30,15 @@ const searchBtn =
 document.getElementById("searchBtn");
 
 /* =========================
+INITIAL STATE
+========================= */
+
+subjectSelect.disabled = true;
+subjectCodeSelect.disabled = true;
+collegeSelect.disabled = true;
+searchBtn.disabled = true;
+
+/* =========================
 LOAD DATA
 ========================= */
 
@@ -129,7 +138,7 @@ allData
 classSelect.innerHTML =
 `
 <option value="">
-कोर्स चुनें (Select Course)
+Select Course
 </option>
 `;
 
@@ -154,26 +163,32 @@ classSelect.addEventListener(
 'change',
 function(){
 
+subjectSelect.disabled = false;
+
 subjectSelect.innerHTML =
 `
 <option value="">
-विषय चुनें (Select Subject)
+Select Subject
 </option>
 `;
 
 subjectCodeSelect.innerHTML =
 `
 <option value="">
-विषय कोड चुनें (Select Subject Code)
+Select Subject Code
 </option>
 `;
 
 collegeSelect.innerHTML =
 `
 <option value="">
-अपना कॉलेज चुनें (Select College)
+Select College
 </option>
 `;
+
+subjectCodeSelect.disabled = true;
+collegeSelect.disabled = true;
+searchBtn.disabled = true;
 
 if(collegeSearch){
 collegeSearch.destroy();
@@ -207,8 +222,6 @@ ${subject}
 
 });
 
-checkFormComplete();
-
 }
 );
 
@@ -220,19 +233,24 @@ subjectSelect.addEventListener(
 'change',
 function(){
 
+subjectCodeSelect.disabled = false;
+
 subjectCodeSelect.innerHTML =
 `
 <option value="">
-विषय कोड चुनें (Select Subject Code)
+Select Subject Code
 </option>
 `;
 
 collegeSelect.innerHTML =
 `
 <option value="">
-अपना कॉलेज चुनें (Select College)
+Select College
 </option>
 `;
+
+collegeSelect.disabled = true;
+searchBtn.disabled = true;
 
 if(collegeSearch){
 collegeSearch.destroy();
@@ -267,8 +285,6 @@ ${code}
 
 });
 
-checkFormComplete();
-
 }
 );
 
@@ -280,10 +296,12 @@ subjectCodeSelect.addEventListener(
 'change',
 function(){
 
+collegeSelect.disabled = false;
+
 collegeSelect.innerHTML =
 `
 <option value="">
-अपना कॉलेज चुनें (Select College)
+Select College
 </option>
 `;
 
@@ -321,6 +339,8 @@ ${college}
 
 });
 
+/* SEARCHABLE COLLEGE */
+
 collegeSearch =
 new TomSelect(
 "#collegeSelect",
@@ -331,11 +351,10 @@ field:"text",
 direction:"asc"
 },
 placeholder:
-"College Search करें"
+"Search College",
+maxOptions:500
 }
 );
-
-checkFormComplete();
 
 }
 );
@@ -346,34 +365,19 @@ COLLEGE CHANGE
 
 collegeSelect.addEventListener(
 'change',
-checkFormComplete
-);
-
-/* =========================
-CHECK FORM
-========================= */
-
-function checkFormComplete(){
+function(){
 
 if(
-
 classSelect.value &&
 subjectSelect.value &&
 subjectCodeSelect.value &&
 collegeSelect.value
-
 ){
-
 searchBtn.disabled = false;
-
-}
-else{
-
-searchBtn.disabled = true;
-
 }
 
 }
+);
 
 /* =========================
 SEARCH
@@ -425,8 +429,7 @@ dateHTML =
 <div class="result-box">
 
 <h3>
-📅 Viva Date
-</h3>
+📅 Viva Date</h3>
 
 <p>
 ${found.VivaDate}
@@ -442,7 +445,7 @@ found.NoticeLink
 target="_blank"
 class="notice-btn">
 
-📄 Notice Download
+📄 See Notice
 
 </a>
 `
@@ -491,7 +494,7 @@ Daily check करते रहें।
 
 resultDiv.innerHTML =
 `
-<div class="result-main">
+<div class="result-main fade-in">
 
 <div class="result-box">
 
@@ -569,7 +572,7 @@ parseInt(parts[0])
 }
 
 /* =========================
-UPCOMING VIVA ALERT
+UPCOMING ALERT SLIDER
 ========================= */
 
 function loadUpcomingAlerts(){
@@ -590,8 +593,6 @@ new Date(today);
 next5Days.setDate(
 today.getDate()+5
 );
-
-/* UNIQUE DATA */
 
 const uniqueMap =
 new Map();
@@ -634,8 +635,6 @@ uniqueMap.set(key,item);
 const updates =
 [...uniqueMap.values()];
 
-/* NO DATA */
-
 if(updates.length === 0){
 
 alertContainer.innerHTML =
@@ -652,8 +651,6 @@ alertContainer.innerHTML =
 return;
 
 }
-
-/* CREATE SLIDER */
 
 alertContainer.innerHTML =
 `
@@ -684,11 +681,50 @@ ${item.Subject}
 
 </div>
 
+${
+item.NoticeLink
+
+?
+
+`
+<a href="${item.NoticeLink}"
+target="_blank"
+class="mini-notice-btn">
+
+📄 See Notice
+
+</a>
+`
+
+:
+
+''
+
+}
+
 </div>
 
 `).join('')}
 
 </div>
+
+</div>
+
+<div class="slider-controls">
+
+<button class="slide-btn"
+id="prevSlide">
+
+❮
+
+</button>
+
+<button class="slide-btn"
+id="nextSlide">
+
+❯
+
+</button>
 
 </div>
 
@@ -736,7 +772,7 @@ current = index;
 
 }
 
-/* AUTO SLIDE */
+/* AUTO SWIPE */
 
 setInterval(()=>{
 
@@ -750,7 +786,7 @@ showSlide(current);
 
 },5000);
 
-/* MANUAL */
+/* DOT MANUAL */
 
 dots.forEach(dot => {
 
@@ -766,6 +802,42 @@ parseInt(dot.dataset.index)
 );
 
 });
+
+/* BUTTON MANUAL */
+
+document.getElementById(
+'prevSlide'
+).addEventListener(
+'click',
+()=>{
+
+current--;
+
+if(current < 0){
+current = updates.length - 1;
+}
+
+showSlide(current);
+
+}
+);
+
+document.getElementById(
+'nextSlide'
+).addEventListener(
+'click',
+()=>{
+
+current++;
+
+if(current >= updates.length){
+current = 0;
+}
+
+showSlide(current);
+
+}
+);
 
 }
 
