@@ -4,10 +4,6 @@ const SHEET_URL =
 let allData = [];
 let collegeSearch;
 
-/* =========================
-ELEMENTS
-========================= */
-
 const classSelect =
 document.getElementById("classSelect");
 
@@ -30,13 +26,13 @@ const searchBtn =
 document.getElementById("searchBtn");
 
 /* =========================
-INITIAL STATE
+INITIAL
 ========================= */
 
-subjectSelect.disabled = true;
-subjectCodeSelect.disabled = true;
-collegeSelect.disabled = true;
-searchBtn.disabled = true;
+subjectSelect.style.display = "none";
+subjectCodeSelect.style.display = "none";
+collegeSelect.style.display = "none";
+searchBtn.style.display = "none";
 
 /* =========================
 LOAD DATA
@@ -102,15 +98,8 @@ console.log(error);
 loader.innerHTML =
 `
 <div class="pending-box">
-
-<h3>
-❌ Data Load Failed
-</h3>
-
-<p>
-Google Sheet connect नहीं हो पा रही।
-</p>
-
+<h3>❌ Data Load Failed</h3>
+<p>Google Sheet connect नहीं हो पा रही।</p>
 </div>
 `;
 
@@ -127,11 +116,9 @@ function loadClasses(){
 const classes =
 [
 ...new Set(
-
 allData
 .map(item => item.Class)
 .filter(Boolean)
-
 )
 ];
 
@@ -163,7 +150,7 @@ classSelect.addEventListener(
 'change',
 function(){
 
-subjectSelect.disabled = false;
+subjectSelect.style.display = "block";
 
 subjectSelect.innerHTML =
 `
@@ -172,23 +159,9 @@ Select Subject
 </option>
 `;
 
-subjectCodeSelect.innerHTML =
-`
-<option value="">
-Select Subject Code
-</option>
-`;
-
-collegeSelect.innerHTML =
-`
-<option value="">
-Select College
-</option>
-`;
-
-subjectCodeSelect.disabled = true;
-collegeSelect.disabled = true;
-searchBtn.disabled = true;
+subjectCodeSelect.style.display = "none";
+collegeSelect.style.display = "none";
+searchBtn.style.display = "none";
 
 if(collegeSearch){
 collegeSearch.destroy();
@@ -200,9 +173,7 @@ const subjects =
 
 allData
 .filter(item =>
-
 item.Class === this.value
-
 )
 
 .map(item => item.Subject)
@@ -233,7 +204,7 @@ subjectSelect.addEventListener(
 'change',
 function(){
 
-subjectCodeSelect.disabled = false;
+subjectCodeSelect.style.display = "block";
 
 subjectCodeSelect.innerHTML =
 `
@@ -242,15 +213,8 @@ Select Subject Code
 </option>
 `;
 
-collegeSelect.innerHTML =
-`
-<option value="">
-Select College
-</option>
-`;
-
-collegeSelect.disabled = true;
-searchBtn.disabled = true;
+collegeSelect.style.display = "none";
+searchBtn.style.display = "none";
 
 if(collegeSearch){
 collegeSearch.destroy();
@@ -296,7 +260,7 @@ subjectCodeSelect.addEventListener(
 'change',
 function(){
 
-collegeSelect.disabled = false;
+collegeSelect.style.display = "block";
 
 collegeSelect.innerHTML =
 `
@@ -339,8 +303,6 @@ ${college}
 
 });
 
-/* SEARCHABLE COLLEGE */
-
 collegeSearch =
 new TomSelect(
 "#collegeSelect",
@@ -373,7 +335,7 @@ subjectSelect.value &&
 subjectCodeSelect.value &&
 collegeSelect.value
 ){
-searchBtn.disabled = false;
+searchBtn.style.display = "block";
 }
 
 }
@@ -405,11 +367,7 @@ if(!found){
 resultDiv.innerHTML =
 `
 <div class="pending-box">
-
-<h3>
-❌ Record नहीं मिला
-</h3>
-
+<h3>❌ Record नहीं मिला</h3>
 </div>
 `;
 
@@ -426,14 +384,11 @@ found.Status.toLowerCase() ===
 
 dateHTML =
 `
-<div class="result-box">
+<div class="result-box compact-box">
 
-<h3>
-📅 Viva Date</h3>
+<h3>📅 Viva Date</h3>
 
-<p>
-${found.VivaDate}
-</p>
+<p>${found.VivaDate}</p>
 
 ${
 found.NoticeLink
@@ -458,15 +413,11 @@ class="notice-btn">
 
 </div>
 
-<div class="result-box">
+<div class="result-box compact-box">
 
-<h3>
-⏰ Reporting Time
-</h3>
+<h3>⏰ Reporting Time</h3>
 
-<p>
-${found.ReportingTime}
-</p>
+<p>${found.ReportingTime}</p>
 
 </div>
 `;
@@ -476,15 +427,12 @@ else{
 
 dateHTML =
 `
-<div class="pending-box">
+<div class="pending-box compact-box">
 
-<h3>
-📢 Viva Date Update
-</h3>
+<h3>📢 Viva Date Update</h3>
 
 <p>
 Viva date अभी घोषित नहीं हुई है।
-Daily check करते रहें।
 </p>
 
 </div>
@@ -494,17 +442,13 @@ Daily check करते रहें।
 
 resultDiv.innerHTML =
 `
-<div class="result-main fade-in">
+<div class="result-main fade-in small-result">
 
-<div class="result-box">
+<div class="result-box compact-box">
 
-<h3>
-🏫 Viva Center
-</h3>
+<h3>🏫 Viva Center</h3>
 
-<p>
-${found.VivaCenter}
-</p>
+<p>${found.VivaCenter}</p>
 
 </div>
 
@@ -531,8 +475,7 @@ function parseCustomDate(dateString){
 
 if(
 !dateString ||
-dateString.toLowerCase() ===
-'pending'
+dateString.toLowerCase() === 'pending'
 ){
 return null;
 }
@@ -640,11 +583,7 @@ if(updates.length === 0){
 alertContainer.innerHTML =
 `
 <div class="pending-box">
-
-<h3>
-📢 अगले 5 दिनों में कोई Viva Update नहीं है।
-</h3>
-
+<h3>📢 अगले 5 दिनों में कोई Viva Update नहीं है।</h3>
 </div>
 `;
 
@@ -655,9 +594,7 @@ return;
 alertContainer.innerHTML =
 `
 <div class="alert-heading">
-
 🔥 Upcoming Viva Alert
-
 </div>
 
 <div class="single-slider">
@@ -674,11 +611,9 @@ ${updates.map(item => `
 </div>
 
 <div class="single-sub">
-
 ${item.Class}
 ${item.Subject}
 • ${item.VivaDate}
-
 </div>
 
 ${
@@ -707,24 +642,6 @@ class="mini-notice-btn">
 `).join('')}
 
 </div>
-
-</div>
-
-<div class="slider-controls">
-
-<button class="slide-btn"
-id="prevSlide">
-
-❮
-
-</button>
-
-<button class="slide-btn"
-id="nextSlide">
-
-❯
-
-</button>
 
 </div>
 
@@ -772,7 +689,7 @@ current = index;
 
 }
 
-/* AUTO SWIPE */
+/* AUTO */
 
 setInterval(()=>{
 
@@ -785,6 +702,61 @@ current = 0;
 showSlide(current);
 
 },5000);
+
+/* TOUCH SWIPE */
+
+let touchStartX = 0;
+let touchEndX = 0;
+
+track.addEventListener(
+'touchstart',
+e => {
+
+touchStartX =
+e.changedTouches[0].screenX;
+
+}
+);
+
+track.addEventListener(
+'touchend',
+e => {
+
+touchEndX =
+e.changedTouches[0].screenX;
+
+handleSwipe();
+
+}
+);
+
+function handleSwipe(){
+
+if(touchEndX < touchStartX - 50){
+
+current++;
+
+if(current >= updates.length){
+current = 0;
+}
+
+showSlide(current);
+
+}
+
+if(touchEndX > touchStartX + 50){
+
+current--;
+
+if(current < 0){
+current = updates.length - 1;
+}
+
+showSlide(current);
+
+}
+
+}
 
 /* DOT MANUAL */
 
@@ -802,42 +774,6 @@ parseInt(dot.dataset.index)
 );
 
 });
-
-/* BUTTON MANUAL */
-
-document.getElementById(
-'prevSlide'
-).addEventListener(
-'click',
-()=>{
-
-current--;
-
-if(current < 0){
-current = updates.length - 1;
-}
-
-showSlide(current);
-
-}
-);
-
-document.getElementById(
-'nextSlide'
-).addEventListener(
-'click',
-()=>{
-
-current++;
-
-if(current >= updates.length){
-current = 0;
-}
-
-showSlide(current);
-
-}
-);
 
 }
 
