@@ -161,5 +161,34 @@ Powered by University Gyaan
 
 <script src="./script.js"></script>
 
+<!-- OneSignal Push Notification -->
+
+<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+
+<script>
+
+window.OneSignalDeferred =
+window.OneSignalDeferred || [];
+
+OneSignalDeferred.push(
+async function(OneSignal) {
+
+await OneSignal.init({
+
+appId:
+"d1a9c1c7-1dac-4988-a692-29d28a356e9f",
+
+notifyButton: {
+enable: true
+},
+
+allowLocalhostAsSecureOrigin: true
+
+});
+
+});
+
+</script>
+
 </body>
 </html>
